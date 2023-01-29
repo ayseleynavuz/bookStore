@@ -1,4 +1,5 @@
 using System;
+using AutoMapper;
 using BookStore;
 using System.Linq;
 using WebApi.BookOperations.GetBooks;
@@ -11,11 +12,13 @@ namespace WebApi.BookOperations.GetBookDetail
 	public class GetBookDetailQuery
 	{
 		private readonly BookStoreDbContext _dbContext;
+        private readonly IMapper _mapper;
         public int BookId { get; set; }
 
-        public GetBookDetailQuery(BookStoreDbContext dbContext)
+        public GetBookDetailQuery(BookStoreDbContext dbContext, IMapper mapper)
         {
             _dbContext = dbContext;
+            _mapper = mapper;
         }
 
         public BookDetailViewModel Handle()
@@ -25,10 +28,6 @@ namespace WebApi.BookOperations.GetBookDetail
                 throw new InvalidOperationException("Belirtilen Id'ye sahip kitap mevcut değildir.");
 
             BookDetailViewModel vm =new BookDetailViewModel();
-              vm.Title = book.Title;
-              vm.Genre = ((GenreEnum)book.GenreId).ToString();
-              vm.PublishDate = book.PublishDate.Date.ToString("dd/MM/yyyy");
-              vm.PageCount = book.PageCount;
            return vm;
         }
 
