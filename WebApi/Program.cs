@@ -1,5 +1,7 @@
+using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using WebApi.DBOperations;
+using WebApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +14,11 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<BookStoreDbContext>(Options=> Options.UseInMemoryDatabase(databaseName:"BookStoreDB"));
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
+
+// Logger Dependency Injection
+builder.Services.AddSingleton<ILoggerService, LoggerManager>();
+builder.Services.AddSingleton<ISingleLogger, ConsoleLogger>();
+builder.Services.AddSingleton<ISingleLogger, DBLogger>();
 
 
 var app = builder.Build();
